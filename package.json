@@ -29,7 +29,15 @@
           }
         ]
       }
-    ]
+    ],
+    "languages": [
+			{
+				"id": "jseden",
+				"aliases": [
+					"JS-Eden"
+				]
+			}
+		]
   },
   "scripts": {
     "lint": "eslint .",

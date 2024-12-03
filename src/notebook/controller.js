@@ -12,7 +12,7 @@ class JSEdenNotebookController {
     controllerId = 'js-eden-notebook-controller-id';
     notebookType = 'js-eden-notebook';
     label = 'JS-Eden Notebook';
-    supportedLanguages = ["javascript", "js-eden"];
+    supportedLanguages = ["jseden"];
   
     _controller;
     _executionOrder = 0;
@@ -47,6 +47,7 @@ class JSEdenNotebookController {
 
         for(let i = 0; i < lines.length; i++){
             lines[i] = lines[i].replace(";", "")
+            console.log(lines[i])
             output += executeLine(lines[i]) + "\n";
         }
   

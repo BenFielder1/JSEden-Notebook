@@ -20,7 +20,7 @@ class JSEdenNotebookSerializer{
                       ? vscode.NotebookCellKind.Code
                       : vscode.NotebookCellKind.Markup,
                   item.source.join('\n'),
-                  item.cell_type === 'code' ? 'javascript' : 'markdown'
+                  item.cell_type === 'code' ? 'jseden' : 'markdown'
               );
             cells.push(cell);
         }
