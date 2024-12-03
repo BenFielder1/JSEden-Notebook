@@ -12,10 +12,24 @@
   "activationEvents": [],
   "main": "./src/extension.js",
   "contributes": {
-    "commands": [{
-      "command": "jseden-notebook-with-kernel.helloWorld",
-      "title": "Hello World"
-    }]
+    "commands": [
+      {
+        "command": "js-eden-visuals.start",
+        "title": "Display output from the notebook",
+        "category": "JS-Eden Webview"
+      }
+    ],
+    "notebooks": [
+      {
+        "type": "js-eden-notebook",
+        "displayName": "JS-Eden Notebook",
+        "selector": [
+          {
+            "filenamePattern": "*.notebook"
+          }
+        ]
+      }
+    ]
   },
   "scripts": {
     "lint": "eslint .",

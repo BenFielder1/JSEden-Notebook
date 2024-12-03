@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS-Eden</title>
+    <link rel="shortcut icon" href="#" />
+</head>
+<body>
+    <h1>JS-Eden Notebook</h1>
+    <p id="example">Hello.</p>
+    <script>
+        let p = document.getElementById("example");
+        p.textContent = "Testing!!!"
+
+        window.addEventListener('message', event => {
+            p.textContent = event.data.command
+        });
+    </script>
+</body>
+</html>

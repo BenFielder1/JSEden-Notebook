@@ -1,36 +1,119 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
-const vscode = require('vscode');
+const { TextDecoder, TextEncoder } = require('util');
+// import * as vscode from 'vscode';
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
+const vscode = require("vscode");
 
-/**
- * @param {vscode.ExtensionContext} context
- */
+// import { TestWebView } from './webview';
+
+const { TestWebView } = require("./webview");
+
+var testWebView;
+
 function activate(context) {
+    context.subscriptions.push(
+        vscode.workspace.registerNotebookSerializer('js-eden-notebook', new SampleSerializer()),
+	    new Controller()
+    );
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "jseden-notebook-with-kernel" is now active!');
-
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with  registerCommand
-	// The commandId parameter must match the command field in package.json
-	const disposable = vscode.commands.registerCommand('jseden-notebook-with-kernel.helloWorld', function () {
-		// The code you place here will be executed every time your command is executed
-
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from jseden-notebook-with-kernel!');
-	});
-
-	context.subscriptions.push(disposable);
+    context.subscriptions.push(
+        vscode.commands.registerCommand('js-eden-visuals.start', ()=>{
+            testWebView = new TestWebView(context);
+        })
+    );
+}
+  
+class SampleSerializer{
+    async deserializeNotebook(content, _token){
+        var contents = new TextDecoder().decode(content);
+  
+        let raw = [];
+  
+        if(contents){
+            raw = JSON.parse(contents);
+        }
+  
+        let cells= [];
+  
+        for (let i = 0; i < raw.length; i++) {
+            let item = raw[i];
+              let cell = new vscode.NotebookCellData(
+                  item.cell_type === 'code'
+                      ? vscode.NotebookCellKind.Code
+                      : vscode.NotebookCellKind.Markup,
+                  item.source.join('\n'),
+                  item.cell_type === 'code' ? 'javascript' : 'markdown'
+              );
+            cells.push(cell);
+        }
+  
+        return new vscode.NotebookData(cells);
+    }
+  
+    async serializeNotebook(data, _token){
+        let contents= [];
+  
+        for (const cell of data.cells) {
+            contents.push({
+                cell_type: cell.kind === vscode.NotebookCellKind.Code ? 'code' : 'markdown',
+                source: cell.value.split(/\r?\n/g)
+            });
+        }
+      
+        return new TextEncoder().encode(JSON.stringify(contents));
+    }
+}
+  
+class Controller {
+    controllerId = 'js-eden-notebook-controller-id';
+    notebookType = 'js-eden-notebook';
+    label = 'JS-Eden Notebook';
+    supportedLanguages = ["javascript", "js-eden"];
+  
+    _controller;
+    _executionOrder = 0;
+    
+    constructor() {
+        this._controller = vscode.notebooks.createNotebookController(
+            this.controllerId,
+            this.notebookType,
+            this.label
+        );
+    
+        this._controller.supportedLanguages = this.supportedLanguages;
+        this._controller.supportsExecutionOrder = true;
+        this._controller.executeHandler = this._execute.bind(this);
+    }
+    
+    _execute(cells, _notebook, _controller){
+        for (let cell of cells) {
+            this._doExecution(cell);
+        }
+    }
+    
+    async _doExecution(cell){
+        const execution = this._controller.createNotebookCellExecution(cell);
+        execution.executionOrder = ++this._executionOrder;
+        execution.start(Date.now());
+  
+        var code = cell.document.getText();
+        var name = cell.index.toString();
+  
+        if(testWebView && testWebView.isActive()){
+            testWebView.sendMessage(code);
+        }
+  
+        execution.replaceOutput([
+            new vscode.NotebookCellOutput([
+                vscode.NotebookCellOutputItem.text(name)
+            ])
+        ]);
+  
+        execution.end(true, Date.now());
+    }
+  
+    dispose(){ }
 }
 
-// This method is called when your extension is deactivated
-function deactivate() {}
-
 module.exports = {
-	activate,
-	deactivate
+	activate
 }
