@@ -1,5 +1,7 @@
 const vscode = require("vscode");
 
+const { executeLine } = require("../kernel/kernel")
+
 let jsedenWebView;
 
 function updateWebView(webview){
@@ -39,7 +41,14 @@ class JSEdenNotebookController {
         execution.start(Date.now());
   
         var code = cell.document.getText();
-        var name = cell.index.toString();
+
+        let lines = code.split("\n");
+        let output = ""
+
+        for(let i = 0; i < lines.length; i++){
+            lines[i] = lines[i].replace(";", "")
+            output += executeLine(lines[i]) + "\n";
+        }
   
         if(jsedenWebView && jsedenWebView.isActive()){
             jsedenWebView.sendMessage(code);
@@ -47,7 +56,7 @@ class JSEdenNotebookController {
   
         execution.replaceOutput([
             new vscode.NotebookCellOutput([
-                vscode.NotebookCellOutputItem.text(name)
+                vscode.NotebookCellOutputItem.text(output)
             ])
         ]);
   

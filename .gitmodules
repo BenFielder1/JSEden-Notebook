@@ -1,0 +1,4 @@
+[submodule "src/kernel/js-eden"]
+	path = src/kernel/js-eden
+	url = https://github.com/EMGroup/js-eden.git
+	branch = vscodeexperiment
