@@ -1,14 +1,10 @@
-// import * as vscode from 'vscode';
-// import * as fs from 'fs';
-// import path from 'path';
-
 const vscode = require("vscode");
 const fs = require("fs");
 const path = require("path");
 
-const html = fs.readFileSync(path.join(__dirname, "../src/test.html"), 'utf-8');
+const html = fs.readFileSync(path.join(__dirname, "./test.html"), 'utf-8');
 
-class TestWebView{
+class JSEdenWebView{
     panel;
     context;
     active;
@@ -40,5 +36,5 @@ class TestWebView{
 }
 
 module.exports = {
-    TestWebView
+    JSEdenWebView
 }
