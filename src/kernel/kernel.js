@@ -1,16 +1,20 @@
 let CLI;
+let extensionPath;
 
-function setupKernel(){
+function setupKernel(context){
+    extensionPath = context.extensionPath;
+
     const { CLIEden } = require('./js-eden/js/cli.js');
     CLI = CLIEden;
 
     CLI.eden = new CLI.Eden();
     global.eden = CLI.eden;
-    CLI.Eden.projectPath = "./js-eden/"
+    CLI.Eden.projectPath = context.extensionPath + "/src/kernel/js-eden/"
+    console.log(CLI.Eden.projectPath)
 
     CLI.initialise();
 }
-    
+
 function getValue(str){
     return CLI.eden.root.lookup(str).value();
 }
@@ -26,8 +30,21 @@ function executeLine(line){
     return "";
 }
 
+function executeCell(line, cell){
+    if(line.startsWith("?")){
+        return getValue(line.substring(1));
+    }
+    let myFragment = new CLI.Eden.Fragment("Cell"+cell, ()=>{
+        myFragment.setSourceInitial(line);
+        myFragment.makeReal("Cell"+cell);
+        myFragment.ast.execute(CLI.EdenSymbol.defaultAgent, CLI.eden.root.scope);
+    })
+    return ""
+}
+
 module.exports = {
     setupKernel,
-    executeLine
+    executeLine,
+    executeCell
 }
 

@@ -6,7 +6,7 @@ const { JSEdenWebView } = require("./webview/webview");
 const { setupKernel } = require("./kernel/kernel")
 
 function activate(context) {
-	setupKernel();
+	setupKernel(context);
 
     context.subscriptions.push(
         vscode.workspace.registerNotebookSerializer('js-eden-notebook', new JSEdenNotebookSerializer()),
