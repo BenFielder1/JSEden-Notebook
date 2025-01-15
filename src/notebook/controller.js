@@ -38,9 +38,9 @@ class JSEdenNotebookController {
         execution.executionOrder = ++this._executionOrder;
         execution.start(Date.now());
   
-        let code = cell.document.getText();
+        var code = cell.document.getText();
 
-        // let output = executeCell(code, cell.index);
+        let output = executeCell(code, cell.index);
   
         // if(jsedenWebView && jsedenWebView.isActive()){
         //     // jsedenWebView.sendMessage(output);
@@ -48,14 +48,14 @@ class JSEdenNotebookController {
   
         execution.replaceOutput([
             new vscode.NotebookCellOutput([
-                vscode.NotebookCellOutputItem.text(code)
+                vscode.NotebookCellOutputItem.text("output")
             ])
         ]);
   
         execution.end(true, Date.now());
     }
   
-    dispose(){}
+    dispose(){ }
 }
 
 module.exports = {
