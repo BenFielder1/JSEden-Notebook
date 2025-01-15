@@ -1,6 +1,6 @@
 const vscode = require("vscode");
 
-const { executeCell, addObserverCallback } = require("../kernel/kernel");
+const { setupKernel, executeCell, addObserverCallback } = require("../kernel/kernel");
 
 function updateWebView(webview){
     addObserverCallback(webview);
@@ -12,7 +12,7 @@ class JSEdenNotebookController {
     label = 'JS-Eden Notebook';
     supportedLanguages = ["jseden"];
     
-    constructor() {
+    constructor(context) {
         this.controller = vscode.notebooks.createNotebookController(
             this.controllerId,
             this.notebookType,
@@ -24,6 +24,8 @@ class JSEdenNotebookController {
         this.controller.executeHandler = this.execute.bind(this);
 
         this.executionOrder = 0;
+
+        setupKernel(context);
     }
     
     execute(cells){
