@@ -1,9 +1,9 @@
-const { TextDecoder, TextEncoder } = require('util');
+const { TextDecoder, TextEncoder } = require("util");
 const vscode = require("vscode");
 
 class JSEdenNotebookSerializer{
     async deserializeNotebook(content){
-        var contents = new TextDecoder().decode(content);
+        let contents = new TextDecoder().decode(content);
   
         let raw = [];
   
@@ -13,15 +13,13 @@ class JSEdenNotebookSerializer{
   
         let cells= [];
   
-        for (let i = 0; i < raw.length; i++) {
+        for(let i = 0; i < raw.length; i++){
             let item = raw[i];
-              let cell = new vscode.NotebookCellData(
-                  item.cell_type === 'code'
-                      ? vscode.NotebookCellKind.Code
-                      : vscode.NotebookCellKind.Markup,
-                  item.source.join('\n'),
-                  item.cell_type === 'code' ? 'jseden' : 'markdown'
-              );
+                let cell = new vscode.NotebookCellData(
+                    item.cell_type === "code" ? vscode.NotebookCellKind.Code : vscode.NotebookCellKind.Markup,
+                    item.source.join('\n'),
+                    item.cell_type === "code" ? "jseden" : "markdown"
+                );
             cells.push(cell);
         }
   
@@ -30,13 +28,13 @@ class JSEdenNotebookSerializer{
   
     async serializeNotebook(data){
         let contents= [];
-  
-        for (const cell of data.cells) {
+
+        data.cells.forEach((cell) => {
             contents.push({
                 cell_type: cell.kind === vscode.NotebookCellKind.Code ? 'code' : 'markdown',
                 source: cell.value.split(/\r?\n/g)
             });
-        }
+        });
       
         return new TextEncoder().encode(JSON.stringify(contents));
     }
