@@ -14,7 +14,7 @@
         p.textContent = "Testing!!!"
 
         window.addEventListener('message', event => {
-            p.textContent = event.data.command
+            p.innerHTML = event.data.command
         });
     </script>
 </body>

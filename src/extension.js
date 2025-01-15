@@ -3,7 +3,7 @@ const vscode = require("vscode");
 const { JSEdenNotebookSerializer } = require("./notebook/serializer");
 const { JSEdenNotebookController, updateWebView } = require("./notebook/controller");
 const { JSEdenWebView } = require("./webview/webview");
-const { setupKernel } = require("./kernel/kernel")
+const { setupKernel } = require("./kernel/kernel");
 
 function activate(context) {
 	setupKernel(context);
