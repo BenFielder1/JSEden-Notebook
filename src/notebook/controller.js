@@ -42,13 +42,9 @@ class JSEdenNotebookController {
 
         let output = executeCell(code, cell.index);
   
-        // if(jsedenWebView && jsedenWebView.isActive()){
-        //     // jsedenWebView.sendMessage(output);
-        // }
-  
         execution.replaceOutput([
             new vscode.NotebookCellOutput([
-                vscode.NotebookCellOutputItem.text("output")
+                vscode.NotebookCellOutputItem.text(output)
             ])
         ]);
   

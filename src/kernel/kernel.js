@@ -1,23 +1,36 @@
-let CLI;
+const { Eden } = require("./js-eden/js/core/eden.js");
+require("./requirements.js");
+
+let eden;
 let jsedenWebView;
 
 function setupKernel(context){
-    const { CLIEden } = require('./js-eden/js/cli.js');
-    CLI = CLIEden;
+    Eden.projectPath = context.extensionPath + "/src/kernel/js-eden/";
 
-    CLI.eden = new CLI.Eden();
-    global.eden = CLI.eden;
-    CLI.Eden.projectPath = context.extensionPath + "/src/kernel/js-eden/"
-    console.log(CLI.Eden.projectPath)
+    eden = new Eden();
+    
+    eden.ready.then(()=>{
+        eden.root.lookup("jseden_parser_cs3").assign(true, eden.root.scope, Eden.EdenSymbol.defaultAgent);
+        eden.root.lookup("jseden_parser_cs3").addJSObserver("parser",(sym, value) => {
+            if (value) {
+                Eden.AST.version = Eden.AST.VERSION_CS3;
+            } else {
+                Eden.AST.version = Eden.AST.VERSION_CS2;
+            }
+        });
 
-    CLI.initialise();
+        global.eden = eden;
+        global.EdenSymbol = Eden.EdenSymbol;
+        
+        Eden.Project.newFromExisting("NewProject", eden);
+    });
 }
 
 function addObserverCallback(webview){
     jsedenWebView = webview;
 
-    CLI.eden.root.lookup("picture").assign(undefined, CLI.eden.root.scope, CLI.EdenSymbol.jsAgent);
-    CLI.eden.root.lookup("picture").addJSObserver("pictureUpdate", (e,v)=>{
+    eden.root.lookup("picture").assign(undefined, eden.root.scope, Eden.EdenSymbol.jsAgent);
+    eden.root.lookup("picture").addJSObserver("pictureUpdate", (e,v)=>{
         if(jsedenWebView && jsedenWebView.isActive()){
             jsedenWebView.sendMessage(v);
         }
@@ -25,10 +38,10 @@ function addObserverCallback(webview){
 }
 
 function getValue(str){
-    return CLI.eden.root.lookup(str).value();
+    return eden.root.lookup(str).value();
 }
 async function exec(str){
-    return await CLI.eden.exec(str);
+    return await eden.exec(str);
 }
 
 function executeLine(line){
@@ -43,10 +56,10 @@ function executeCell(line, cell){
     if(line.startsWith("?")){
         return getValue(line.substring(1));
     }
-    let myFragment = new CLI.Eden.Fragment("Cell"+cell, ()=>{
+    let myFragment = new Eden.Fragment("Cell"+cell, ()=>{
         myFragment.setSourceInitial(line);
         myFragment.makeReal("Cell"+cell);
-        myFragment.ast.execute(CLI.EdenSymbol.defaultAgent, CLI.eden.root.scope);
+        myFragment.ast.execute(Eden.EdenSymbol.defaultAgent, eden.root.scope);
     })
     return ""
 }
@@ -57,4 +70,3 @@ module.exports = {
     executeLine,
     executeCell
 }
-
