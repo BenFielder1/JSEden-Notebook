@@ -1,11 +1,9 @@
 const vscode = require("vscode");
 
-const { executeCell } = require("../kernel/kernel");
-
-let jsedenWebView;
+const { executeCell, addObserverCallback } = require("../kernel/kernel");
 
 function updateWebView(webview){
-    jsedenWebView = webview;
+    addObserverCallback(webview);
 }
 
 class JSEdenNotebookController {
@@ -40,24 +38,24 @@ class JSEdenNotebookController {
         execution.executionOrder = ++this._executionOrder;
         execution.start(Date.now());
   
-        var code = cell.document.getText();
+        let code = cell.document.getText();
 
-        let output = executeCell(code, cell.index);
+        // let output = executeCell(code, cell.index);
   
-        if(jsedenWebView && jsedenWebView.isActive()){
-            jsedenWebView.sendMessage(output);
-        }
+        // if(jsedenWebView && jsedenWebView.isActive()){
+        //     // jsedenWebView.sendMessage(output);
+        // }
   
         execution.replaceOutput([
             new vscode.NotebookCellOutput([
-                vscode.NotebookCellOutputItem.text(output)
+                vscode.NotebookCellOutputItem.text(code)
             ])
         ]);
   
         execution.end(true, Date.now());
     }
   
-    dispose(){ }
+    dispose(){}
 }
 
 module.exports = {

@@ -8,13 +8,14 @@
 </head>
 <body>
     <h1>JS-Eden Notebook</h1>
-    <p id="example">Hello.</p>
+
+    <div id="container"></div>
+
     <script>
-        let p = document.getElementById("example");
-        p.textContent = "Testing!!!"
+        let container = document.getElementById("container");
 
         window.addEventListener('message', event => {
-            p.innerHTML = event.data.command
+            container.innerHTML = event.data.command;
         });
     </script>
 </body>

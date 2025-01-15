@@ -1,9 +1,7 @@
 let CLI;
-let extensionPath;
+let jsedenWebView;
 
 function setupKernel(context){
-    extensionPath = context.extensionPath;
-
     const { CLIEden } = require('./js-eden/js/cli.js');
     CLI = CLIEden;
 
@@ -13,6 +11,17 @@ function setupKernel(context){
     console.log(CLI.Eden.projectPath)
 
     CLI.initialise();
+}
+
+function addObserverCallback(webview){
+    jsedenWebView = webview;
+
+    CLI.eden.root.lookup("picture").assign(undefined, CLI.eden.root.scope, CLI.EdenSymbol.jsAgent);
+    CLI.eden.root.lookup("picture").addJSObserver("pictureUpdate", (e,v)=>{
+        if(jsedenWebView && jsedenWebView.isActive()){
+            jsedenWebView.sendMessage(v);
+        }
+    })
 }
 
 function getValue(str){
@@ -44,6 +53,7 @@ function executeCell(line, cell){
 
 module.exports = {
     setupKernel,
+    addObserverCallback,
     executeLine,
     executeCell
 }
