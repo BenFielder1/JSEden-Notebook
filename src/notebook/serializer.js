@@ -2,7 +2,7 @@ const { TextDecoder, TextEncoder } = require('util');
 const vscode = require("vscode");
 
 class JSEdenNotebookSerializer{
-    async deserializeNotebook(content, _token){
+    async deserializeNotebook(content){
         var contents = new TextDecoder().decode(content);
   
         let raw = [];
@@ -28,7 +28,7 @@ class JSEdenNotebookSerializer{
         return new vscode.NotebookData(cells);
     }
   
-    async serializeNotebook(data, _token){
+    async serializeNotebook(data){
         let contents= [];
   
         for (const cell of data.cells) {

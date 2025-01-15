@@ -27,7 +27,7 @@ class JSEdenNotebookController {
         this._controller.executeHandler = this._execute.bind(this);
     }
     
-    _execute(cells, _notebook, _controller){
+    _execute(cells){
         for (let cell of cells) {
             this._doExecution(cell);
         }
