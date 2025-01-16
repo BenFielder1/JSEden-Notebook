@@ -14,8 +14,22 @@
     <script>
         let container = document.getElementById("container");
 
+        let observables = {};
+
         window.addEventListener('message', event => {
-            container.innerHTML = event.data.command;
+            let data = event.data;
+
+            observables[data.observable] = data.content;
+
+            let keys = Object.keys(observables);
+
+            let htmlContent = "";
+
+            keys.forEach((key)=>{
+                htmlContent += "<div>" + observables[key] + "</div>"
+            });
+
+            container.innerHTML = htmlContent;
         });
     </script>
 </body>

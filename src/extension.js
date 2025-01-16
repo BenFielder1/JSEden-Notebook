@@ -14,7 +14,7 @@ function activate(context) {
 
     context.subscriptions.push(
         vscode.commands.registerCommand('js-eden-visuals.start', ()=>{
-            kernel.addObserverCallback(new JSEdenWebview(context))
+            kernel.setWebview(new JSEdenWebview(context))
         })
     );
 }

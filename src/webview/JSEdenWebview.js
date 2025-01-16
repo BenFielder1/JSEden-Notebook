@@ -2,7 +2,7 @@ const vscode = require("vscode");
 const fs = require("fs");
 const path = require("path");
 
-const html = fs.readFileSync(path.join(__dirname, "./test.html"), 'utf-8');
+const html = fs.readFileSync(path.join(__dirname, "./view.html"), 'utf-8');
 
 class JSEdenWebview{
     panel;
@@ -26,8 +26,8 @@ class JSEdenWebview{
         this.panel.onDidDispose(() => { this.active = false; }, null, this.context.subscriptions);
     }
 
-    sendMessage(message){
-        this.panel.webview.postMessage({ command: message });
+    sendObservable(name, value){
+        this.panel.webview.postMessage({ observable: name, content: value });
     }
 
     isActive(){

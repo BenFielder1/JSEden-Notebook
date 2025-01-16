@@ -32,10 +32,12 @@ class JSEdenNotebookKernel{
 
     setupKernel(){
         this.Eden = Eden;
-        
+
         this.Eden.projectPath = this.context.extensionPath + "/src/js-eden/";
 
         this.eden = new this.Eden();
+
+        this.observables = [];
 
         this.eden.ready.then(()=>{
             this.eden.root.lookup("jseden_parser_cs3").assign(true, this.eden.root.scope, this.Eden.EdenSymbol.defaultAgent);
@@ -74,31 +76,39 @@ class JSEdenNotebookKernel{
         });
     }
 
-    addObserverCallback(webview){
-        this.webview = webview;
-
-        this.eden.root.lookup("picture").assign(undefined, this.eden.root.scope, this.Eden.EdenSymbol.jsAgent);
-        this.eden.root.lookup("picture").addJSObserver("pictureUpdate", (e,v)=>{
-            if(this.webview && this.webview.isActive()){
-                this.webview.sendMessage(v);
-            }
-        })
-    }
-
     executeCell(code, cell){
         if(code.startsWith("?")){
-            return this.getValue(code.substring(1));
+            return this.addVariableObserver(code.substring(1));
         }
         let myFragment = new this.Eden.Fragment("Cell"+cell, ()=>{
             myFragment.setSourceInitial(code);
             myFragment.makeReal("Cell"+cell);
             myFragment.ast.execute(this.Eden.EdenSymbol.defaultAgent, this.eden.root.scope);
         })
-        return ""
+        return "";
     }
 
-    getValue(str){
-        return this.eden.root.lookup(str).value();
+    setWebview(webview){
+        this.webview = webview;
+    }
+
+    addVariableObserver(variable){
+        if(this.observables.includes(variable)){ return; }
+
+        this.observables.push(variable);
+
+        let value = this.eden.root.lookup(variable).value();
+
+        if(value && this.webview && this.webview.isActive()){
+            this.webview.sendObservable(variable, value);
+        }
+
+        this.eden.root.lookup(variable).assign(undefined, this.eden.root.scope, this.Eden.EdenSymbol.jsAgent);
+        this.eden.root.lookup(variable).addJSObserver(variable + "Update", (e,v)=>{
+            if(this.webview && this.webview.isActive()){
+                this.webview.sendObservable(e.name, v);
+            }
+        });
     }
 }
 
