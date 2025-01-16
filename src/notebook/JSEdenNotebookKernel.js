@@ -13,8 +13,6 @@ class JSEdenNotebookKernel{
         this.label = "JS-Eden Notebook";
         this.supportedLanguages = ["jseden"];
 
-        this.Eden = Eden;
-
         this.setupController()
 
         this.setupKernel();
@@ -33,6 +31,8 @@ class JSEdenNotebookKernel{
     }
 
     setupKernel(){
+        this.Eden = Eden;
+        
         this.Eden.projectPath = this.context.extensionPath + "/src/js-eden/";
 
         this.eden = new this.Eden();

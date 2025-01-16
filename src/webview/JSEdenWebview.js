@@ -4,7 +4,7 @@ const path = require("path");
 
 const html = fs.readFileSync(path.join(__dirname, "./test.html"), 'utf-8');
 
-class JSEdenWebView{
+class JSEdenWebview{
     panel;
     context;
     active;
@@ -36,5 +36,5 @@ class JSEdenWebView{
 }
 
 module.exports = {
-    JSEdenWebView
+    JSEdenWebview
 }
