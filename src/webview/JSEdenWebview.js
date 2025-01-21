@@ -5,16 +5,13 @@ const path = require("path");
 const html = fs.readFileSync(path.join(__dirname, "./view.html"), 'utf-8');
 
 class JSEdenWebview{
-    panel;
-    context;
-    active;
-
-    constructor(context){
+    constructor(context, count){
         this.active = true;
         this.context = context;
+        this.count = count;
         this.panel = vscode.window.createWebviewPanel(
-            'js-eden-visuals',
-            'JS-Eden',
+            "js-eden-visuals",
+            "JS-Eden picture" + this.count,
             vscode.ViewColumn.One,
             { 
                 enableScripts: true,

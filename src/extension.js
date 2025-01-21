@@ -6,6 +6,7 @@ const { JSEdenWebview } = require("./webview/JSEdenWebview");
 
 function activate(context) {
     let kernel = new JSEdenNotebookKernel(context);
+    let webviewCount = 0;
 
     context.subscriptions.push(
         vscode.workspace.registerNotebookSerializer('js-eden-notebook', new JSEdenNotebookSerializer()),
@@ -14,7 +15,8 @@ function activate(context) {
 
     context.subscriptions.push(
         vscode.commands.registerCommand('js-eden-visuals.start', ()=>{
-            kernel.setWebview(new JSEdenWebview(context))
+            webviewCount++;
+            kernel.setWebview(new JSEdenWebview(context, webviewCount), webviewCount)
         })
     );
 }

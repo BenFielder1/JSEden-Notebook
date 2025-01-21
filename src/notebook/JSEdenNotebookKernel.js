@@ -96,13 +96,13 @@ class JSEdenNotebookKernel{
         });
     }
 
-    setWebview(webview){
-        this.webview = webview;
+    setWebview(webview, webviewCount){
+        let picture = "picture" + webviewCount;
 
-        this.eden.root.lookup("picture").assign(undefined, this.eden.root.scope, this.Eden.EdenSymbol.jsAgent);
-        this.eden.root.lookup("picture").addJSObserver("pictureUpdate", (e,v)=>{
-            if(this.webview && this.webview.isActive()){
-                this.webview.sendPicture(v);
+        this.eden.root.lookup(picture).assign(undefined, this.eden.root.scope, this.Eden.EdenSymbol.jsAgent);
+        this.eden.root.lookup(picture).addJSObserver(picture + "Update", (e,v)=>{
+            if(webview && webview.isActive()){
+                webview.sendPicture(v);
             }
         });
     }
