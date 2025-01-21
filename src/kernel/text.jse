@@ -1,0 +1,4 @@
+func Text{
+    para t, x, y, f, s, fs;
+    return '<text x="'//x//'" y="'//y//'" fill="'//f//'" stroke="'//s//'" font-size="'//fs//'">'//t//'</text>'
+};

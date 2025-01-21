@@ -26,8 +26,8 @@ class JSEdenWebview{
         this.panel.onDidDispose(() => { this.active = false; }, null, this.context.subscriptions);
     }
 
-    sendObservable(name, value){
-        this.panel.webview.postMessage({ observable: name, content: value });
+    sendPicture(data){
+        this.panel.webview.postMessage({ picture: data });
     }
 
     isActive(){

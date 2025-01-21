@@ -1,4 +1,6 @@
 const vscode = require("vscode");
+const fs = require("fs");
+const path = require("path");
 
 const { Eden } = require("../js-eden/js/core/eden.js");
 require("./kernelRequirements.js");
@@ -31,6 +33,13 @@ class JSEdenNotebookKernel{
     }
 
     setupKernel(){
+        const rectangle = fs.readFileSync(path.join(this.context.extensionPath, "/src/kernel/rectangle.jse"), "utf-8");
+        const circle = fs.readFileSync(path.join(this.context.extensionPath, "/src/kernel/circle.jse"), "utf-8");
+        const ellipse = fs.readFileSync(path.join(this.context.extensionPath, "/src/kernel/ellipse.jse"), "utf-8");
+        const line = fs.readFileSync(path.join(this.context.extensionPath, "/src/kernel/line.jse"), "utf-8");
+        const text = fs.readFileSync(path.join(this.context.extensionPath, "/src/kernel/text.jse"), "utf-8");
+        const image = fs.readFileSync(path.join(this.context.extensionPath, "/src/kernel/image.jse"), "utf-8");
+
         this.Eden = Eden;
 
         this.Eden.projectPath = this.context.extensionPath + "/src/js-eden/";
@@ -53,6 +62,15 @@ class JSEdenNotebookKernel{
             global.EdenSymbol = this.Eden.EdenSymbol;
 
             this.Eden.Project.newFromExisting("NewProject", this.eden);
+            
+            setTimeout(()=>{
+                this.executeCell(rectangle, "R");
+                this.executeCell(circle, "C");
+                this.executeCell(ellipse, "E");
+                this.executeCell(line, "L");
+                this.executeCell(text, "T");
+                this.executeCell(image, "I");
+            }, 1000);            
         });
     }
 
@@ -64,49 +82,27 @@ class JSEdenNotebookKernel{
 
             let code = cell.document.getText();
 
-            let output = this.executeCell(code, cell.index);
-
-            execution.replaceOutput([
-                new vscode.NotebookCellOutput([
-                    vscode.NotebookCellOutputItem.text(output)
-                ])
-            ]);
+            this.executeCell(code, cell.index);
 
             execution.end(true, Date.now());
         });
     }
 
     executeCell(code, cell){
-        if(code.startsWith("?")){
-            return this.addVariableObserver(code.substring(1));
-        }
         let myFragment = new this.Eden.Fragment("Cell"+cell, ()=>{
             myFragment.setSourceInitial(code);
             myFragment.makeReal("Cell"+cell);
             myFragment.ast.execute(this.Eden.EdenSymbol.defaultAgent, this.eden.root.scope);
-        })
-        return "";
+        });
     }
 
     setWebview(webview){
         this.webview = webview;
-    }
 
-    addVariableObserver(variable){
-        if(this.observables.includes(variable)){ return; }
-
-        this.observables.push(variable);
-
-        let value = this.eden.root.lookup(variable).value();
-
-        if(value && this.webview && this.webview.isActive()){
-            this.webview.sendObservable(variable, value);
-        }
-
-        this.eden.root.lookup(variable).assign(undefined, this.eden.root.scope, this.Eden.EdenSymbol.jsAgent);
-        this.eden.root.lookup(variable).addJSObserver(variable + "Update", (e,v)=>{
+        this.eden.root.lookup("picture").assign(undefined, this.eden.root.scope, this.Eden.EdenSymbol.jsAgent);
+        this.eden.root.lookup("picture").addJSObserver("pictureUpdate", (e,v)=>{
             if(this.webview && this.webview.isActive()){
-                this.webview.sendObservable(e.name, v);
+                this.webview.sendPicture(v);
             }
         });
     }

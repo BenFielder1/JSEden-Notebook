@@ -1,0 +1,4 @@
+func Ellipse{
+    para rx, ry, cx, cy, f, s;
+    return '<ellipse rx="'//rx//'" ry="'//ry//'" cx="'//cx//'" cy="'//cy//'" fill="'//f//'" stroke="'//s//'" />'
+};

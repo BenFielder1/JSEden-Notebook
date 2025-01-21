@@ -1,0 +1,4 @@
+func Circle{
+    para r, x, y, f, s;
+    return '<circle r="'//r//'" cx="'//x//'" cy="'//y//'" fill="'//f//'" stroke="'//s//'" />'
+};

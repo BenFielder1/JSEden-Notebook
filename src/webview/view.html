@@ -5,31 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JS-Eden</title>
     <link rel="shortcut icon" href="#" />
+    <style>
+        *{
+            margin-left: -10px;
+        }
+    </style>
 </head>
 <body>
-    <h1>JS-Eden Notebook</h1>
-
-    <div id="container"></div>
+    <svg height="99vh" width="100vw" xmlns="http://www.w3.org/2000/svg" id="container"></svg>
 
     <script>
         let container = document.getElementById("container");
 
-        let observables = {};
-
         window.addEventListener('message', event => {
-            let data = event.data;
-
-            observables[data.observable] = data.content;
-
-            let keys = Object.keys(observables);
-
-            let htmlContent = "";
-
-            keys.forEach((key)=>{
-                htmlContent += "<div>" + observables[key] + "</div>"
-            });
-
-            container.innerHTML = htmlContent;
+            container.innerHTML = event.data.picture;
         });
     </script>
 </body>
