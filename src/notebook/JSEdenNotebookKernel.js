@@ -94,6 +94,9 @@ class JSEdenNotebookKernel{
             myFragment.makeReal("Cell"+cell);
             myFragment.ast.execute(this.Eden.EdenSymbol.defaultAgent, this.eden.root.scope);
         });
+
+        this.treeview.updateEden(this.eden);
+        this.treeview.refresh();
     }
 
     setWebview(webview, webviewCount){
@@ -105,6 +108,10 @@ class JSEdenNotebookKernel{
                 webview.sendPicture(v);
             }
         });
+    }
+
+    setTreeview(treeview){
+        this.treeview = treeview;
     }
 }
 

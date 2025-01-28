@@ -37,7 +37,33 @@
 					"JS-Eden"
 				]
 			}
-		]
+		],
+    "views": {
+      "js-eden": [
+        {
+          "id": "js-eden-symbols",
+          "name": "Symbols",
+          "icon": "src/svg/user-secret-solid.svg",
+          "contextualTitle": "JS-Eden"
+        }
+      ]
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "js-eden",
+          "title": "JS-Eden",
+          "icon": "src/svg/user-secret-solid.svg"
+        }
+      ],
+      "panel": [
+        {
+          "id": "js-eden",
+          "title": "JS-Eden",
+          "icon": "src/svg/user-secret-solid.svg"
+        }
+      ]
+    }
   },
   "scripts": {
     "lint": "eslint .",
