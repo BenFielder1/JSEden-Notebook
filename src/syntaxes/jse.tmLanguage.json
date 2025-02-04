@@ -1,0 +1,72 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "JS-Eden",
+	"patterns": [
+		{
+			"include": "#keywords"
+		},
+		{
+			"include": "#strings-double-quote"
+		},
+		{
+			"include": "#strings-single-quote"
+		},
+		{
+			"include": "#numbers"
+		},
+		{
+			"include": "#boolean"
+		}
+	],
+	"repository": {
+		"keywords": {
+			"patterns": [{
+				"name": "keyword.control.jse",
+				"match": "\\b(if|else|when|is)\\b"
+			}]
+		},
+		"strings-double-quote": {
+			"name": "string.quoted.double.jse",
+			"begin": "\"",
+			"end": "\"",
+			"patterns": [
+				{
+					"name": "constant.character.escape.jse",
+					"match": "\\\\."
+				}
+			]
+		},
+		"strings-single-quote": {
+			"name": "string.quoted.single.jse",
+			"begin": "'",
+			"end": "'",
+			"patterns": [
+				{
+					"name": "constant.character.escape.jse",
+					"match": "\\\\."
+				}
+			]
+		},
+		"boolean": {
+			"patterns": [
+				{
+					"name": "keyword.boolean.jse",
+					"match": "\\b(true|false)\\b"
+				}
+			]
+		},
+		"numbers": {
+			"patterns": [
+				{
+					"name": "constant.numeric.float.jse",
+					"match": "\\b([0..9])+\\.([0..9])+\\b"
+				},
+				{
+					"name": "constant.numeric.jse",
+					"match": "\\b([0-9])+\\b"
+				}
+			]
+		}
+	},
+	"scopeName": "source.jse"
+}

@@ -33,11 +33,22 @@
     "languages": [
 			{
 				"id": "jseden",
-				"aliases": [
-					"JS-Eden"
-				]
+				"aliases": ["JS-Eden"],
+        "extensions": [".jse", ".js-e", ".notebook"],
+        "configuration": "./src/syntaxes/language-configuration.json",
+        "icon": {
+          "dark": "src/svg/user-secret-solid.svg",
+          "light": "src/svg/user-secret-solid.svg"
+        }
 			}
 		],
+    "grammars": [
+      {
+        "language": "jseden",
+        "scopeName": "source.jse",
+        "path": "./src/syntaxes/jse.tmLanguage.json"
+      }
+    ],
     "views": {
       "js-eden": [
         {
