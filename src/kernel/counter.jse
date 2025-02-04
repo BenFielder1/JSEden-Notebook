@@ -1,0 +1,8 @@
+func Counter{
+    ${{
+        t = 0;
+        setInterval(()=>{
+            context.lookup(arguments[0]).assign(t++,context.scope,"Timer");
+        },arguments[1]);
+    }}$;
+};

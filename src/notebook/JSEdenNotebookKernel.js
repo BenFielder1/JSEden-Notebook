@@ -38,7 +38,7 @@ class JSEdenNotebookKernel{
         const ellipse = fs.readFileSync(path.join(this.context.extensionPath, "/src/kernel/ellipse.jse"), "utf-8");
         const line = fs.readFileSync(path.join(this.context.extensionPath, "/src/kernel/line.jse"), "utf-8");
         const text = fs.readFileSync(path.join(this.context.extensionPath, "/src/kernel/text.jse"), "utf-8");
-        const image = fs.readFileSync(path.join(this.context.extensionPath, "/src/kernel/image.jse"), "utf-8");
+        const counter = fs.readFileSync(path.join(this.context.extensionPath, "/src/kernel/counter.jse"), "utf-8");
 
         this.Eden = Eden;
 
@@ -69,7 +69,7 @@ class JSEdenNotebookKernel{
                 this.executeCell(ellipse, "E");
                 this.executeCell(line, "L");
                 this.executeCell(text, "T");
-                this.executeCell(image, "I");
+                this.executeCell(counter, "Counter");
             }, 1000);            
         });
     }

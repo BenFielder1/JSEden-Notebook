@@ -22,7 +22,7 @@
 		"keywords": {
 			"patterns": [{
 				"name": "keyword.control.jse",
-				"match": "\\b(if|else|when|is)\\b"
+				"match": "\\b(if|else|when|is|with)\\b"
 			}]
 		},
 		"strings-double-quote": {
