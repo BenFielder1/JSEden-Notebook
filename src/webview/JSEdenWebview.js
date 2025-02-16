@@ -15,6 +15,7 @@ class JSEdenWebview{
             vscode.ViewColumn.One,
             { 
                 enableScripts: true,
+                retainContextWhenHidden: true,
             }
         );
 

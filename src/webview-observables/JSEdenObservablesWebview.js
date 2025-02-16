@@ -24,7 +24,7 @@ class JSEdenObservablesWebview{
             column || vscode.ViewColumn.One,
             {
                 enableScripts: true,
-                localResourceRoots: [vscode.Uri.joinPath(extensionUri, 'media')]
+                retainContextWhenHidden: true,
             }
         );
 
