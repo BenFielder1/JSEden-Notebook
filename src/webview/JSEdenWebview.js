@@ -21,6 +21,21 @@ class JSEdenWebview{
         this.panel.webview.html = html;
 
         this.panel.onDidDispose(() => { this.active = false; }, null, this.context.subscriptions);
+
+        this.panel.webview.onDidReceiveMessage(
+            message => {
+                switch (message.command) {
+                    case 'mouseMove':
+                        const { x, y } = message;
+                        console.log(`Mouse coordinates: (${x}, ${y})`);
+                        break;
+                    default:
+                        console.warn(`Unknown command: ${message.command}`);
+                }
+            },
+            undefined,
+            context.subscriptions
+        );
     }
 
     sendPicture(data){

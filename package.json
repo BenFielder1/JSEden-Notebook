@@ -17,6 +17,11 @@
         "command": "js-eden-visuals.start",
         "title": "Display output from the notebook",
         "category": "JS-Eden Webview"
+      },
+      {
+        "command": "extension.openCustomTreeview",
+        "title": "Open Custom Treeview",
+        "category": "JS-Eden Webview"
       }
     ],
     "notebooks": [

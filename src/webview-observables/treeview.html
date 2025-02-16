@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Treeview</title>
+</head>
+<body>
+    <div class="container">
+        <input type="text" id="searchBar" placeholder="Search..." />
+        <ul id="treeview">
+            <!-- Tree items will be populated here -->
+        </ul>
+    </div>
+    <script>
+const vscode = acquireVsCodeApi();
+
+// Function to create tree items recursively
+function createTreeItems(data, parentUl) {
+    data.forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = item.label;
+        li.classList.add('tree-item');
+
+        // Optionally add description as a span
+        if (item.description) {
+            const descSpan = document.createElement('span');
+            descSpan.textContent = ' ' + item.description;
+            descSpan.style.color = '#888';
+            li.appendChild(descSpan);
+        }
+
+        // Add tooltip
+        if (item.tooltip) {
+            li.title = item.tooltip;
+        }
+
+        // Add click event
+        li.addEventListener('click', function (e) {
+            e.stopPropagation();
+            vscode.postMessage({
+                command: 'itemClick',
+                text: item.label
+            });
+        });
+
+        parentUl.appendChild(li);
+    });
+}
+
+// Function to render the tree
+function renderTree(data) {
+    const treeview = document.getElementById('treeview');
+    treeview.innerHTML = ''; // Clear existing tree
+
+    createTreeItems(data, treeview);
+}
+
+// Function to filter the tree based on search query
+function filterTree(query, data) {
+    if (!query) return data;
+
+    const filtered = [];
+
+    data.forEach(item => {
+        if (item.label.toLowerCase().includes(query.toLowerCase())) {
+            filtered.push(item);
+        }
+        // If your data has nested items, handle them here
+        // For simplicity, assuming flat structure
+    });
+
+    return filtered;
+}
+
+// Event listener for the search bar
+document.getElementById('searchBar').addEventListener('input', function () {
+    const query = this.value.trim();
+    const filteredData = filterTree(query, originalData);
+    renderTree(filteredData);
+});
+
+let originalData = [];
+
+// Listen for messages from the extension
+window.addEventListener('message', event => {
+    const message = event.data; // The JSON data sent by the extension
+
+    console.log("aaaa");
+
+    switch (message.command) {
+        case 'updateTree':
+            originalData = message.data;
+            renderTree(originalData);
+            break;
+    }
+});
+    </script>
+</body>
+</html>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,17 +10,47 @@
         *{
             margin-left: -10px;
         }
+
+        #container{
+            cursor: crosshair;
+        }
     </style>
 </head>
 <body>
     <svg height="99vh" width="100vw" xmlns="http://www.w3.org/2000/svg" id="container"></svg>
 
     <script>
+        const vscode = acquireVsCodeApi();
+
         let container = document.getElementById("container");
 
         window.addEventListener('message', event => {
             container.innerHTML = event.data.picture;
         });
+
+        function throttle(func, limit) {
+            let inThrottle;
+            return function () {
+                const args = arguments;
+                const context = this;
+                if (!inThrottle) {
+                    func.apply(context, args);
+                    inThrottle = true;
+                    setTimeout(() => inThrottle = false, limit);
+                }
+            }
+        }
+
+        container.addEventListener('mousemove', throttle((event) => {
+            const x = event.clientX;
+            const y = event.clientY;
+            vscode.postMessage({
+                command: 'mouseMove',
+                x: x,
+                y: y
+            });
+        }, 100));
     </script>
 </body>
+
 </html>
