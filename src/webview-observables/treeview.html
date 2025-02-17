@@ -3,7 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Custom Treeview</title>
+    <title>JS-Eden Observables</title>
+    <style>
+body {
+    font-family: Arial, sans-serif;
+    padding: 10px;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+#searchBar {
+    padding: 8px;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+#treeview {
+    list-style-type: none;
+    padding-left: 20px;
+    overflow-y: auto;
+    flex-grow: 1;
+}
+
+.tree-item {
+    cursor: pointer;
+    padding: 4px 0;
+}
+
+.tree-item:hover {
+    background-color: #606060;
+}
+
+    </style>
 </head>
 <body>
     <div class="container">
@@ -13,8 +48,6 @@
         </ul>
     </div>
     <script>
-const vscode = acquireVsCodeApi();
-
 // Function to create tree items recursively
 function createTreeItems(data, parentUl) {
     data.forEach(item => {
@@ -36,13 +69,12 @@ function createTreeItems(data, parentUl) {
         }
 
         // Add click event
-        li.addEventListener('click', function (e) {
-            e.stopPropagation();
-            vscode.postMessage({
-                command: 'itemClick',
-                text: item.label
-            });
-        });
+        // li.addEventListener('click', function (e) {
+        //     e.stopPropagation();
+        //     document.getElementById('searchBar').value = item.label;
+        //     const filteredData = filterTree(item.label, originalData);
+        //     renderTree(filteredData);
+        // });
 
         parentUl.appendChild(li);
     });
@@ -83,10 +115,8 @@ document.getElementById('searchBar').addEventListener('input', function () {
 let originalData = [];
 
 // Listen for messages from the extension
-window.addEventListener('message', event => {
+window.addEventListener('message', (event) => {
     const message = event.data; // The JSON data sent by the extension
-
-    console.log("aaaa");
 
     switch (message.command) {
         case 'updateTree':

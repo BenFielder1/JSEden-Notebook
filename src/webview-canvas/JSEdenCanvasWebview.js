@@ -2,7 +2,7 @@ const vscode = require("vscode");
 const fs = require("fs");
 const path = require("path");
 
-const html = fs.readFileSync(path.join(__dirname, "./view.html"), 'utf-8');
+const html = fs.readFileSync(path.join(__dirname, "./svgCanvas.html"), "utf-8");
 
 class JSEdenCanvasWebview{
     constructor(context, count){
@@ -12,7 +12,7 @@ class JSEdenCanvasWebview{
         this.panel = vscode.window.createWebviewPanel(
             "js-eden-visuals",
             "JS-Eden picture" + this.count,
-            vscode.ViewColumn.One,
+            vscode.ViewColumn.Active,
             { 
                 enableScripts: true,
                 retainContextWhenHidden: true,
@@ -21,7 +21,10 @@ class JSEdenCanvasWebview{
 
         this.panel.webview.html = html;
 
-        this.panel.onDidDispose(() => { this.active = false; }, null, this.context.subscriptions);
+        this.panel.onDidDispose(() => { 
+            this.active = false;
+            this.panel.dispose();
+        }, null, this.context.subscriptions);
 
         this.panel.webview.onDidReceiveMessage(
             message => {

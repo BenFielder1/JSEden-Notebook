@@ -19,7 +19,7 @@ function activate(context) {
     context.subscriptions.push(
         vscode.commands.registerCommand("js-eden-visuals.start", ()=>{
             webviewCount++;
-            kernel.setWebview(new JSEdenCanvasWebview(context, webviewCount), webviewCount)
+            kernel.setWebview(new JSEdenCanvasWebview(context, webviewCount), webviewCount);
         })
     );
 
@@ -31,12 +31,10 @@ function activate(context) {
 
     let treeview = new JSEdenTreeview();
 
-    vscode.window.registerTreeDataProvider("js-eden-symbols", treeview);
-
     kernel.setTreeview(treeview);
 
     const disposable = vscode.commands.registerCommand('extension.openCustomTreeview', () => {
-        JSEdenObservablesWebview.createOrShow(context.extensionUri, treeview);
+        new JSEdenObservablesWebview(context, treeview);
     });
 
     context.subscriptions.push(disposable);

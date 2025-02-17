@@ -14,7 +14,9 @@ class JSEdenSlidersWebview {
 
         // Listen for when the panel is disposed
         // This happens when the user closes the panel or when the panel is closed programmatically
-        this.panel.onDidDispose(() => this.dispose(), null, this.disposables);
+        this.panel.onDidDispose(() => {
+            this.dispose();
+        }, null, this.disposables);
 
         // Handle messages from the webview
         this.panel.webview.onDidReceiveMessage(
@@ -46,7 +48,7 @@ class JSEdenSlidersWebview {
         const panel = vscode.window.createWebviewPanel(
             JSEdenSlidersWebview.viewType,
             'Variable Sliders',
-            column || vscode.ViewColumn.One,
+            column || vscode.ViewColumn.Active,
             {
                 // Enable JavaScript in the webview
                 enableScripts: true,

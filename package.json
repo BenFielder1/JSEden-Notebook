@@ -46,8 +46,8 @@
         "extensions": [".jse", ".js-e", ".notebook"],
         "configuration": "./src/syntaxes/language-configuration.json",
         "icon": {
-          "dark": "src/svg/user-secret-solid.svg",
-          "light": "src/svg/user-secret-solid.svg"
+          "dark": "src/svg/file.svg",
+          "light": "src/svg/file.svg"
         }
 			}
 		],
@@ -57,33 +57,7 @@
         "scopeName": "source.jse",
         "path": "./src/syntaxes/jse.tmLanguage.json"
       }
-    ],
-    "views": {
-      "js-eden": [
-        {
-          "id": "js-eden-symbols",
-          "name": "Symbols",
-          "icon": "src/svg/user-secret-solid.svg",
-          "contextualTitle": "JS-Eden"
-        }
-      ]
-    },
-    "viewsContainers": {
-      "activitybar": [
-        {
-          "id": "js-eden",
-          "title": "JS-Eden",
-          "icon": "src/svg/user-secret-solid.svg"
-        }
-      ],
-      "panel": [
-        {
-          "id": "js-eden",
-          "title": "JS-Eden",
-          "icon": "src/svg/user-secret-solid.svg"
-        }
-      ]
-    }
+    ]
   },
   "scripts": {
     "lint": "eslint .",
