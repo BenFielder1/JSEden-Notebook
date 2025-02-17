@@ -4,7 +4,7 @@ const path = require("path");
 
 const html = fs.readFileSync(path.join(__dirname, "./view.html"), 'utf-8');
 
-class JSEdenWebview{
+class JSEdenCanvasWebview{
     constructor(context, count){
         this.active = true;
         this.context = context;
@@ -49,5 +49,5 @@ class JSEdenWebview{
 }
 
 module.exports = {
-    JSEdenWebview
+    JSEdenCanvasWebview
 }

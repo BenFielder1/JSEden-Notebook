@@ -2,6 +2,8 @@ const vscode = require("vscode");
 const fs = require("fs");
 const path = require("path");
 
+const { JSEdenSlidersWebview } = require("../webview-sliders/JSEdenSlidersWebview");
+
 const { Eden } = require("../js-eden/js/core/eden.js");
 require("./kernelRequirements.js");
 
@@ -14,6 +16,11 @@ class JSEdenNotebookKernel{
         this.notebookType = "js-eden-notebook";
         this.label = "JS-Eden Notebook";
         this.supportedLanguages = ["jseden"];
+
+        this.variables = new Map();
+
+        this.variables.set("x", 10);
+        this.variables.set("y", 23);
 
         this.setupController()
 
@@ -112,6 +119,24 @@ class JSEdenNotebookKernel{
 
     setTreeview(treeview){
         this.treeview = treeview;
+    }
+
+    syncVariablesToSliders() {
+        if (JSEdenSlidersWebview.currentPanel) {
+            const variables = Array.from(this.variables.entries()).map(([name, value]) => ({
+                name,
+                value
+            }));
+            JSEdenSlidersWebview.currentPanel.updateVariables(variables);
+        }
+    }
+
+    // Update this method to handle variable updates from the slider panel
+    async handleVariableUpdate(variable, value) {
+        this.variables.set(variable, value);
+        
+        // Update the notebook cells that use this variable
+        await this.updateNotebookCells(variable, value);
     }
 }
 

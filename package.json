@@ -22,6 +22,10 @@
         "command": "extension.openCustomTreeview",
         "title": "Open Custom Treeview",
         "category": "JS-Eden Webview"
+      },
+      {
+        "command": "myExtension.showVariableSliders",
+        "title": "Show Variable Sliders"
       }
     ],
     "notebooks": [

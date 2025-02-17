@@ -2,9 +2,10 @@ const vscode = require("vscode");
 
 const { JSEdenNotebookSerializer } = require("./notebook/JSEdenNotebookSerializer");
 const { JSEdenNotebookKernel } = require("./notebook/JSEdenNotebookKernel");
-const { JSEdenWebview } = require("./webview/JSEdenWebview");
+const { JSEdenCanvasWebview } = require("./webview-canvas/JSEdenCanvasWebview");
 const { JSEdenTreeview } = require("./treeview/JSEdenTreeview");
 const { JSEdenObservablesWebview } = require("./webview-observables/JSEdenObservablesWebview");
+const { JSEdenSlidersWebview } = require("./webview-sliders/JSEdenSlidersWebview");
 
 function activate(context) {
     let kernel = new JSEdenNotebookKernel(context);
@@ -18,7 +19,13 @@ function activate(context) {
     context.subscriptions.push(
         vscode.commands.registerCommand("js-eden-visuals.start", ()=>{
             webviewCount++;
-            kernel.setWebview(new JSEdenWebview(context, webviewCount), webviewCount)
+            kernel.setWebview(new JSEdenCanvasWebview(context, webviewCount), webviewCount)
+        })
+    );
+
+    context.subscriptions.push(
+        vscode.commands.registerCommand('myExtension.showVariableSliders', () => {
+            JSEdenSlidersWebview.createOrShow(context.extensionUri);
         })
     );
 
