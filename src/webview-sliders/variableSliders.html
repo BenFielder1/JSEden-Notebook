@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS-Eden Variable Sliders</title>
+    <style>
+        body {
+            padding: 20px;
+            color: var(--vscode-foreground);
+            font-family: var(--vscode-font-family);
+        }
+
+        .slider-container {
+            margin-bottom: 20px;
+        }
+
+        .slider-group {
+            margin: 15px 0;
+        }
+
+        input[type="range"] {
+            width: 200px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="slider-container">
+        {{sliders}}
+    </div>
+
+    <script>
+        const vscode = acquireVsCodeApi();
+
+        function updateVariable(name, value) {
+            // Update the display
+            document.getElementById(name + '-value').textContent = value;
+
+            // Send message to extension
+            vscode.postMessage({
+                command: 'updateVariable',
+                variable: name,
+                value: parseInt(value)
+            });
+        }
+
+        window.addEventListener('message', event => {
+            const message = event.data;
+            switch (message.command) {
+                case 'updateVariables':
+                    message.variables.forEach(variable => {
+                        const slider = document.getElementById(`${variable.name}-slider`);
+                        const valueDisplay = document.getElementById(`${variable.name}-value`);
+                        if (slider && valueDisplay) {
+                            slider.value = variable.value;
+                            valueDisplay.textContent = variable.value;
+                        }
+                    });
+                    break;
+            }
+        });
+    </script>
+</body>
+
+</html>

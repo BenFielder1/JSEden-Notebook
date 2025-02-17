@@ -1,75 +1,82 @@
 {
-  "name": "jseden-notebook-with-kernel",
-  "displayName": "jseden-notebook-with-kernel",
-  "description": "",
-  "version": "0.0.1",
-  "engines": {
-    "vscode": "^1.95.0"
-  },
-  "categories": [
-    "Other"
-  ],
-  "activationEvents": [],
-  "main": "./src/extension.js",
-  "contributes": {
-    "commands": [
-      {
-        "command": "js-eden-visuals.start",
-        "title": "Display output from the notebook",
-        "category": "JS-Eden Webview"
-      },
-      {
-        "command": "extension.openCustomTreeview",
-        "title": "Open Custom Treeview",
-        "category": "JS-Eden Webview"
-      },
-      {
-        "command": "myExtension.showVariableSliders",
-        "title": "Show Variable Sliders"
-      }
+    "name": "jseden-notebook-with-kernel",
+    "displayName": "jseden-notebook-with-kernel",
+    "description": "",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.95.0"
+    },
+    "categories": [
+        "Other"
     ],
-    "notebooks": [
-      {
-        "type": "js-eden-notebook",
-        "displayName": "JS-Eden Notebook",
-        "selector": [
-          {
-            "filenamePattern": "*.notebook"
-          }
+    "activationEvents": [],
+    "main": "./src/extension.js",
+    "contributes": {
+        "commands": [
+            {
+                "command": "js-eden-notebook.launch-canvas",
+                "title": "Display output from the notebook",
+                "category": "JS-Eden Webview"
+            },
+            {
+                "command": "js-eden-notebook.launch-observables",
+                "title": "Display observables",
+                "category": "JS-Eden Webview"
+            },
+            {
+                "command": "js-eden-notebook.launch-variable-sliders",
+                "title": "Display variable sliders",
+                "category": "JS-Eden Webview"
+            }
+        ],
+        "notebooks": [
+            {
+                "type": "js-eden-notebook",
+                "displayName": "JS-Eden Notebook",
+                "selector": [
+                    {
+                        "filenamePattern": "*.notebook"
+                    }
+                ]
+            }
+        ],
+        "languages": [
+            {
+                "id": "jseden",
+                "aliases": [
+                    "JS-Eden"
+                ],
+                "extensions": [
+                    ".jse",
+                    ".js-e",
+                    ".notebook"
+                ],
+                "configuration": "./src/syntaxes/language-configuration.json",
+                "icon": {
+                    "dark": "src/svg/file.svg",
+                    "light": "src/svg/file.svg"
+                }
+            }
+        ],
+        "grammars": [
+            {
+                "language": "jseden",
+                "scopeName": "source.jse",
+                "path": "./src/syntaxes/jse.tmLanguage.json"
+            }
         ]
-      }
-    ],
-    "languages": [
-			{
-				"id": "jseden",
-				"aliases": ["JS-Eden"],
-        "extensions": [".jse", ".js-e", ".notebook"],
-        "configuration": "./src/syntaxes/language-configuration.json",
-        "icon": {
-          "dark": "src/svg/file.svg",
-          "light": "src/svg/file.svg"
-        }
-			}
-		],
-    "grammars": [
-      {
-        "language": "jseden",
-        "scopeName": "source.jse",
-        "path": "./src/syntaxes/jse.tmLanguage.json"
-      }
-    ]
-  },
-  "scripts": {
-    "lint": "eslint .",
-    "pretest": "npm run lint",
-    "test": "vscode-test"
-  },
-  "devDependencies": {
-    "@types/vscode": "^1.95.0",
-    "@types/mocha": "^10.0.9",
-    "@types/node": "20.x",
-    "eslint": "^9.13.0",
-    "@vscode/test-cli": "^0.0.10",
-    "@vscode/test-electron": "^2.4.1"
-  }
+    },
+    "scripts": {
+        "lint": "eslint .",
+        "pretest": "npm run lint",
+        "test": "vscode-test"
+    },
+    "devDependencies": {
+        "@types/vscode": "^1.95.0",
+        "@types/mocha": "^10.0.9",
+        "@types/node": "20.x",
+        "eslint": "^9.13.0",
+        "@vscode/test-cli": "^0.0.10",
+        "@vscode/test-electron": "^2.4.1"
+    }
 }

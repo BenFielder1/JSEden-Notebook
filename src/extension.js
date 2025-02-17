@@ -16,16 +16,23 @@ function activate(context) {
 	    kernel
     );
 
+    // js-eden-notebook.launch-canvas
     context.subscriptions.push(
-        vscode.commands.registerCommand("js-eden-visuals.start", ()=>{
+        vscode.commands.registerCommand("js-eden-notebook.launch-canvas", ()=>{
             webviewCount++;
             kernel.setWebview(new JSEdenCanvasWebview(context, webviewCount), webviewCount);
         })
     );
 
+    // js-eden-notebook.launch-variable-sliders
     context.subscriptions.push(
-        vscode.commands.registerCommand('myExtension.showVariableSliders', () => {
-            JSEdenSlidersWebview.createOrShow(context.extensionUri);
+        vscode.commands.registerCommand("js-eden-notebook.launch-variable-sliders", () => {
+            if(JSEdenSlidersWebview.currentPanel){
+                JSEdenSlidersWebview.currentPanel.panel.reveal();
+            }
+            else{
+                new JSEdenSlidersWebview(context);
+            }
         })
     );
 
@@ -33,11 +40,12 @@ function activate(context) {
 
     kernel.setTreeview(treeview);
 
-    const disposable = vscode.commands.registerCommand('extension.openCustomTreeview', () => {
-        new JSEdenObservablesWebview(context, treeview);
-    });
-
-    context.subscriptions.push(disposable);
+    // js-eden-notebook.launch-observables
+    context.subscriptions.push(
+        vscode.commands.registerCommand("js-eden-notebook.launch-observables", () => {
+            new JSEdenObservablesWebview(context, treeview);
+        })
+    );
 }
 
 module.exports = {

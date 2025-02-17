@@ -130,14 +130,6 @@ class JSEdenNotebookKernel{
             JSEdenSlidersWebview.currentPanel.updateVariables(variables);
         }
     }
-
-    // Update this method to handle variable updates from the slider panel
-    async handleVariableUpdate(variable, value) {
-        this.variables.set(variable, value);
-        
-        // Update the notebook cells that use this variable
-        await this.updateNotebookCells(variable, value);
-    }
 }
 
 module.exports = {
