@@ -85,6 +85,12 @@ function renderTree(data) {
     const treeview = document.getElementById('treeview');
     treeview.innerHTML = ''; // Clear existing tree
 
+    let query = document.getElementById('searchBar').value.trim();
+
+    if(query != ""){
+        data = filterTree(query, data);
+    }
+
     createTreeItems(data, treeview);
 }
 

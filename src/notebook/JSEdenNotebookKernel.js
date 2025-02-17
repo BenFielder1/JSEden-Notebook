@@ -120,8 +120,17 @@ class JSEdenNotebookKernel{
 
     static updateVariableFromSlider(name, value){
         if(JSEdenNotebookKernel.currentKernel){
-            let code = name + " = " + value;
+            let code = name + " = " + value + ";";
             JSEdenNotebookKernel.currentKernel.executeCell(code, 999);
+        }
+    }
+
+    static updateMouseCoords(x, y){
+        if(JSEdenNotebookKernel.currentKernel){
+            let code1 = "canvasX" + " = " + x + ";\n";
+            let code2 = "canvasY" + " = " + y + ";";
+            let code = code1 + code2;
+            JSEdenNotebookKernel.currentKernel.executeCell(code, 998);
         }
     }
 }

@@ -2,6 +2,8 @@ const vscode = require("vscode");
 const fs = require("fs");
 const path = require("path");
 
+const { JSEdenNotebookKernel } = require("../notebook/JSEdenNotebookKernel");
+
 const html = fs.readFileSync(path.join(__dirname, "./svgCanvas.html"), "utf-8");
 
 class JSEdenCanvasWebview{
@@ -31,10 +33,8 @@ class JSEdenCanvasWebview{
                 switch (message.command) {
                     case 'mouseMove':
                         const { x, y } = message;
-                        console.log(`Mouse coordinates: (${x}, ${y})`);
+                        JSEdenNotebookKernel.updateMouseCoords(x, y);
                         break;
-                    default:
-                        console.warn(`Unknown command: ${message.command}`);
                 }
             },
             undefined,
