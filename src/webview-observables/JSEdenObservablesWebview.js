@@ -25,7 +25,11 @@ class JSEdenObservablesWebview{
 
         this.panel.onDidDispose(() => this.panel.dispose(), null, null);
 
-        this.treeview.onDidChangeTreeData(() => this.sendTreeData());
+        this.treeview.onDidChangeTreeData(() => {
+            setTimeout(() => {
+                this.sendTreeData();
+            }, 100);
+        });
     }
 
     sendTreeData() {

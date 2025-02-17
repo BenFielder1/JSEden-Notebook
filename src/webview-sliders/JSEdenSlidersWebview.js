@@ -2,19 +2,22 @@ const vscode = require("vscode");
 const fs = require("fs");
 const path = require("path");
 
+const { JSEdenNotebookKernel } = require("../notebook/JSEdenNotebookKernel");
+
 const html = fs.readFileSync(path.join(__dirname, "./variableSliders.html"), "utf-8");
 const sliderTemplate = fs.readFileSync(path.join(__dirname, "./slider-template.html"), "utf-8");
 
 class JSEdenSlidersWebview{
     static currentPanel;
 
-    constructor(context){
+    constructor(context, jsedenTreeview){
         if (JSEdenSlidersWebview.currentPanel) {
             JSEdenSlidersWebview.currentPanel.panel.reveal();
             return;
         }
 
         this.context = context;
+        this.treeview = jsedenTreeview;
 
         this.panel = vscode.window.createWebviewPanel(
             "js-eden-variable-sliders",
@@ -23,20 +26,26 @@ class JSEdenSlidersWebview{
             {
                 enableScripts: true,
                 retainContextWhenHidden: true,
-                localResourceRoots: [vscode.Uri.joinPath(this.context.extensionUri, 'media')]
             }
         );
 
-        this.panel.webview.html = this.getHtmlForWebview();
+        this.dontInclude = ["autocalc", "PI", "semicircleAngle", "_time", "view_myscript_current"];
+
+        this.panel.webview.html = this.renderVariableSlidersFromTemplate();
 
         this.panel.onDidDispose(() => this.panel.dispose(), null, null);
+
+        this.treeview.onDidChangeTreeData(() => {
+            setTimeout(() => {
+                this.panel.webview.html = this.renderVariableSlidersFromTemplate();
+            }, 100);
+        });
 
         this.panel.webview.onDidReceiveMessage(
             message => {
                 switch (message.command) {
                     case 'updateVariable':
-                        // Handle variable update
-                        console.log(`Variable ${message.variable} updated to ${message.value}`);
+                        JSEdenNotebookKernel.updateVariableFromSlider(message.variable, message.value);
                         return;
                 }
             },
@@ -44,34 +53,30 @@ class JSEdenSlidersWebview{
             null
         );
 
-        JSEdenSlidersWebview.currentPanel = this.panel;
+        JSEdenSlidersWebview.currentPanel = this;
     }
 
-    getHtmlForWebview() {
-        // Get variables from your notebook or other source
-        const variables = [
-            { name: 'x', value: 42 },
-            { name: 'y', value: 10 }
-        ];
+    renderVariableSlidersFromTemplate() {
+        if (!this.treeview || !this.panel.webview) {
+            return;
+        }
 
-        // Generate sliders HTML using the template
-        const slidersHtml = variables.map(variable => {
+        const filteredTreeItems = this.treeview.getItems().filter(item => typeof item.value === typeof 1 && !this.dontInclude.includes(item.label));
+
+        const variablesForSliders = filteredTreeItems.map(item => ({
+            name: item.label,
+            value: item.value
+        }));
+
+        const slidersHtml = variablesForSliders.map(variable => {
             return sliderTemplate
                 .replace(/{{name}}/g, variable.name)
                 .replace(/{{value}}/g, variable.value);
         }).join('');
 
-        // Insert the sliders into the main template
         const finalHtml = html.replace(/{{sliders}}/g, slidersHtml);
 
         return finalHtml;
-    }
-
-    updateVariables(variables) {
-        this.panel.webview.postMessage({
-            command: 'updateVariables',
-            variables: variables
-        });
     }
 }
 

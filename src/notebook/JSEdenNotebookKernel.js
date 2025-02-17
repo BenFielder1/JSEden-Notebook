@@ -2,12 +2,12 @@ const vscode = require("vscode");
 const fs = require("fs");
 const path = require("path");
 
-const { JSEdenSlidersWebview } = require("../webview-sliders/JSEdenSlidersWebview");
-
 const { Eden } = require("../js-eden/js/core/eden.js");
 require("./kernelRequirements.js");
 
 class JSEdenNotebookKernel{
+    static currentKernel;
+
     constructor(context){
         this.context = context;
         this.executionOrder = 0;
@@ -17,14 +17,11 @@ class JSEdenNotebookKernel{
         this.label = "JS-Eden Notebook";
         this.supportedLanguages = ["jseden"];
 
-        this.variables = new Map();
-
-        this.variables.set("x", 10);
-        this.variables.set("y", 23);
-
         this.setupController()
 
         this.setupKernel();
+
+        JSEdenNotebookKernel.currentKernel = this;
     }
 
     setupController(){
@@ -121,13 +118,10 @@ class JSEdenNotebookKernel{
         this.treeview = treeview;
     }
 
-    syncVariablesToSliders() {
-        if (JSEdenSlidersWebview.currentPanel) {
-            const variables = Array.from(this.variables.entries()).map(([name, value]) => ({
-                name,
-                value
-            }));
-            JSEdenSlidersWebview.currentPanel.updateVariables(variables);
+    static updateVariableFromSlider(name, value){
+        if(JSEdenNotebookKernel.currentKernel){
+            let code = name + " = " + value;
+            JSEdenNotebookKernel.currentKernel.executeCell(code, 999);
         }
     }
 }

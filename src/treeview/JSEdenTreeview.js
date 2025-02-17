@@ -48,6 +48,7 @@ class JSEdenSymbol extends vscode.TreeItem{
         if(value != undefined){
             this.tooltip = `${label} = ${value}`;
             this.description = "= " + value;
+            this.value = value;
         }
         else{
             this.tooltip = `${label}`;
