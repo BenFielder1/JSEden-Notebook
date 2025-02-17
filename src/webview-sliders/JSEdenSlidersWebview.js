@@ -29,7 +29,7 @@ class JSEdenSlidersWebview{
             }
         );
 
-        this.dontInclude = ["autocalc", "PI", "semicircleAngle", "_time", "view_myscript_current"];
+        this.dontInclude = ["autocalc", "PI", "semicircleAngle", "_time", "view_myscript_current", "mouseX", "mouseY"];
 
         this.panel.webview.html = this.renderVariableSlidersFromTemplate();
 

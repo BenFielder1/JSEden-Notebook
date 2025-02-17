@@ -127,8 +127,8 @@ class JSEdenNotebookKernel{
 
     static updateMouseCoords(x, y){
         if(JSEdenNotebookKernel.currentKernel){
-            let code1 = "canvasX" + " = " + x + ";\n";
-            let code2 = "canvasY" + " = " + y + ";";
+            let code1 = "mouseX" + " = " + x + ";\n";
+            let code2 = "mouseY" + " = " + y + ";";
             let code = code1 + code2;
             JSEdenNotebookKernel.currentKernel.executeCell(code, 998);
         }
