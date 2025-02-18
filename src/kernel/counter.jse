@@ -1,17 +1,10 @@
-func CounterOriginal{
-    ${{
-        t = 0;
-        setInterval(()=>{
-            context.lookup(arguments[0]).assign(t++,context.scope,"Timer");
-        },arguments[1]);
-    }}$;
-};
-
 func Counter{
     ${{
-        t = 0;
+        let t = 0;
+        if(arguments[0].value() === undefined) arguments[0].assign(0,context.scope,"Timer");
         setInterval(()=>{
-            arguments[0].assign(t++,context.scope,"Timer");
+            t = arguments[0].value() + 1;
+            arguments[0].assign(t,context.scope,"Timer");
         },arguments[1]);
     }}$;
 };

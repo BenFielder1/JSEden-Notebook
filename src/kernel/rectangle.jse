@@ -1,4 +1,15 @@
 func Rectangle{
-    para x, y, w, h, f;
-    return '<rect width="'//w//'" height="'//h//'" x="'//x//'" y="'//y//'" fill="'//f//'" />'
+    ${{
+        let x = arguments[0];
+        let y = arguments[1];
+        let w = arguments[2];
+        let h = arguments[3];
+        let f = arguments[4];
+        let s = arguments[5];
+
+        if(f === undefined) f = "white";
+        if(s === undefined) s = "none";
+
+        return `<rect width="${w}" height="${h}" x="${x}" y="${y}" fill="${f}" stroke="${s}" />`
+    }}$;
 };

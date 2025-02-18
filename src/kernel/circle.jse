@@ -1,4 +1,14 @@
 func Circle{
-    para x, y, r, f;
-    return '<circle r="'//r//'" cx="'//x//'" cy="'//y//'" fill="'//f//'" />'
+    ${{
+        let x = arguments[0];
+        let y = arguments[1];
+        let r = arguments[2];
+        let f = arguments[3];
+        let s = arguments[4];
+
+        if(f === undefined) f = "white";
+        if(s === undefined) s = "none";
+
+        return `<circle r="${r}" cx="${x}" cy="${y}" fill="${f}" stroke="${s}" />`
+    }}$;
 };

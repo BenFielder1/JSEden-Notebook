@@ -1,4 +1,15 @@
 func Ellipse{
-    para cx, cy, rx, ry, f;
-    return '<ellipse rx="'//rx//'" ry="'//ry//'" cx="'//cx//'" cy="'//cy//'" fill="'//f//'" />'
+    ${{
+        let cx = arguments[0];
+        let cy = arguments[1];
+        let rx = arguments[2];
+        let ry = arguments[3];
+        let f = arguments[4];
+        let s = arguments[5];
+
+        if(f === undefined) f = "white";
+        if(s === undefined) s = "none";
+
+        return `<ellipse rx="${rx}" ry="${ry}" cx="${cx}" cy="${cy}" fill="${f}" stroke="${s}" />`
+    }}$;
 };

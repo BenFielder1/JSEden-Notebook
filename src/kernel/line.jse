@@ -1,4 +1,15 @@
 func Line{
-    para x1, y1, x2, y2, s;
-    return '<line x1="'//x1//'" y1="'//y1//'" x2="'//x2//'" y2="'//y2//'" stroke="'//s//'" stroke-width="2" />'
+    ${{
+        let x1 = arguments[0];
+        let y1 = arguments[1];
+        let x2 = arguments[2];
+        let y2 = arguments[3];
+        let s = arguments[4];
+        let sw = arguments[5];
+
+        if(s === undefined) s = "white";
+        if(sw === undefined) sw = 2;
+
+        return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${s}" stroke-width="${sw}" />`
+    }}$;
 };
