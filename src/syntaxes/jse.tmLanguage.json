@@ -16,6 +16,9 @@
 		},
 		{
 			"include": "#boolean"
+		},
+		{
+			"include": "#functions"
 		}
 	],
 	"repository": {
@@ -64,6 +67,14 @@
 				{
 					"name": "constant.numeric.jse",
 					"match": "\\b([0-9])+\\b"
+				}
+			]
+		},
+		"functions": {
+			"patterns": [
+				{
+					"name": "variable.language.jse",
+					"match": "\\b([A-Z])([a-z]|[A-Z])+\\b"
 				}
 			]
 		}
