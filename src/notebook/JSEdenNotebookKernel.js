@@ -133,6 +133,22 @@ class JSEdenNotebookKernel{
             JSEdenNotebookKernel.currentKernel.executeCell(code, 998);
         }
     }
+
+    static updateCanvasSize(width, height){
+        if(JSEdenNotebookKernel.currentKernel){
+            let code1 = "book_width" + " = " + width*2 + ";\n";
+            let code2 = "book_height" + " = " + height + ";";
+            let code = code1 + code2;
+            JSEdenNotebookKernel.currentKernel.executeCell(code, 997);
+        }
+    }
+
+    static updateMousePressed(mousePressed){
+        if(JSEdenNotebookKernel.currentKernel){
+            let code = "mousePressed" + " = " + mousePressed + ";";
+            JSEdenNotebookKernel.currentKernel.executeCell(code, 996);
+        }
+    }
 }
 
 module.exports = {

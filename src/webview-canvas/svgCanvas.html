@@ -7,22 +7,37 @@
     <title>JS-Eden Canvas</title>
     <link rel="shortcut icon" href="#" />
     <style>
-        *{
+        * {
             margin-left: -10px;
         }
 
-        #container{
+        #container {
             cursor: crosshair;
         }
     </style>
 </head>
+
 <body>
     <svg height="99vh" width="100vw" xmlns="http://www.w3.org/2000/svg" id="container"></svg>
 
     <script>
         const vscode = acquireVsCodeApi();
 
+        vscode.postMessage({
+            command: 'resize',
+            width: window.innerWidth,
+            height: window.innerHeight
+        });
+
         let container = document.getElementById("container");
+
+        window.addEventListener("resize", event => {
+            vscode.postMessage({
+                command: 'resize',
+                width: window.innerWidth,
+                height: window.innerHeight
+            });
+        });
 
         window.addEventListener('message', event => {
             container.innerHTML = event.data.picture;
@@ -41,6 +56,20 @@
             }
         }
 
+        container.addEventListener('mousedown',(event) => {
+            vscode.postMessage({
+                command: 'mousePress',
+                mousePressed: true
+            });
+        });
+
+        container.addEventListener('mouseup',(event) => {
+            vscode.postMessage({
+                command: 'mousePress',
+                mousePressed: false
+            });
+        });
+
         container.addEventListener('mousemove', throttle((event) => {
             const x = event.clientX;
             const y = event.clientY;
@@ -49,7 +78,7 @@
                 x: x,
                 y: y
             });
-        }, 100));
+        }, 250));
     </script>
 </body>
 

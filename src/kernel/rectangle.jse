@@ -1,4 +1,4 @@
 func Rectangle{
-    para w, h, x, y, f, s;
-    return '<rect width="'//w//'" height="'//h//'" x="'//x//'" y="'//y//'" fill="'//f//'" stroke="'//s//'" />'
+    para x, y, w, h, f;
+    return '<rect width="'//w//'" height="'//h//'" x="'//x//'" y="'//y//'" fill="'//f//'" />'
 };

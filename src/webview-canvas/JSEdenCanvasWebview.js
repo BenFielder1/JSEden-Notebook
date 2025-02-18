@@ -35,6 +35,15 @@ class JSEdenCanvasWebview{
                         const { x, y } = message;
                         JSEdenNotebookKernel.updateMouseCoords(x, y);
                         break;
+                    case 'resize':
+                        const { width, height } = message;
+                        JSEdenNotebookKernel.updateCanvasSize(width, height);
+                        break;
+                    case "mousePress":
+                        const { mousePressed } = message;
+                        console.log("mouse");
+                        JSEdenNotebookKernel.updateMousePressed(mousePressed);
+                        break;
                 }
             },
             undefined,
