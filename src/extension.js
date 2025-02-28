@@ -18,17 +18,16 @@ function activate(context) {
 
     context.subscriptions.push(
         vscode.workspace.registerNotebookSerializer("js-eden-notebook", new JSEdenNotebookSerializer()),
-	    // kernel
-    );
 
-    context.subscriptions.push(
-        vscode.commands.registerCommand("js-eden-notebook.launch-canvas", ()=>{
+	    vscode.commands.registerCommand("js-eden-notebook.launch-canvas", ()=>{
             webviewCount++;
             kernel.setWebview(new JSEdenCanvasWebview(context, webviewCount), webviewCount);
-        })
-    );
+        }),
 
-    context.subscriptions.push(
+        vscode.commands.registerCommand("js-eden-notebook.launch-observables", () => {
+            new JSEdenObservablesWebview(context, treeview);
+        }),
+        
         vscode.commands.registerCommand("js-eden-notebook.launch-variable-sliders", () => {
             if(JSEdenSlidersWebview.currentPanel){
                 JSEdenSlidersWebview.currentPanel.panel.reveal();
@@ -36,12 +35,6 @@ function activate(context) {
             else{
                 new JSEdenSlidersWebview(context, treeview);
             }
-        })
-    );
-
-    context.subscriptions.push(
-        vscode.commands.registerCommand("js-eden-notebook.launch-observables", () => {
-            new JSEdenObservablesWebview(context, treeview);
         })
     );
 }

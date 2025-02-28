@@ -74,7 +74,9 @@ class JSEdenNotebookKernel{
                 this.executeCell(line, "L");
                 this.executeCell(text, "T");
                 this.executeCell(counter, "Counter");
-            }, 1000);            
+            }, 1000); 
+            
+            this.treeview.updateEden(this.eden);
         });
     }
 
@@ -99,7 +101,6 @@ class JSEdenNotebookKernel{
             myFragment.ast.execute(this.Eden.EdenSymbol.defaultAgent, this.eden.root.scope);
         });
 
-        this.treeview.updateEden(this.eden);
         this.treeview.refresh();
     }
 
@@ -147,6 +148,13 @@ class JSEdenNotebookKernel{
         if(JSEdenNotebookKernel.currentKernel){
             let code = "mousePressed" + " = " + mousePressed + ";";
             JSEdenNotebookKernel.currentKernel.executeCell(code, 996);
+        }
+    }
+
+    static getPicture(picture){
+        if(JSEdenNotebookKernel.currentKernel){
+            let data = JSEdenNotebookKernel.currentKernel.eden.root.lookup(picture).value();
+            return data;
         }
     }
 }

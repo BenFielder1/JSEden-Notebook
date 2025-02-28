@@ -11,22 +11,25 @@ class JSEdenCanvasWebview{
         this.active = true;
         this.context = context;
         this.count = count;
+        this.picture = "picture" + this.count;
         this.panel = vscode.window.createWebviewPanel(
             "js-eden-visuals",
-            "JS-Eden picture" + this.count,
+            "JS-Eden " + this.picture,
             vscode.ViewColumn.Active,
             { 
                 enableScripts: true,
-                retainContextWhenHidden: true,
+                retainContextWhenHidden: false,
             }
         );
 
         this.panel.webview.html = html;
 
-        this.panel.onDidDispose(() => { 
-            this.active = false;
-            this.panel.dispose();
-        }, null, this.context.subscriptions);
+        this.panel.onDidChangeViewState((e)=>{
+            if(e.webviewPanel.visible){
+                let data = JSEdenNotebookKernel.getPicture(this.picture);
+                this.panel.webview.postMessage({ picture: data });
+            }
+        });
 
         this.panel.webview.onDidReceiveMessage(
             message => {
@@ -41,14 +44,18 @@ class JSEdenCanvasWebview{
                         break;
                     case "mousePress":
                         const { mousePressed } = message;
-                        console.log("mouse");
                         JSEdenNotebookKernel.updateMousePressed(mousePressed);
                         break;
                 }
             },
-            undefined,
-            context.subscriptions
+            null,
+            null
         );
+
+        this.panel.onDidDispose(() => { 
+            this.active = false;
+            this.panel.dispose();
+        }, null, null);
     }
 
     sendPicture(data){

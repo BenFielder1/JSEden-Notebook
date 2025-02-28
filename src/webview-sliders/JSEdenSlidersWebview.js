@@ -25,20 +25,24 @@ class JSEdenSlidersWebview{
             vscode.ViewColumn.Active,
             {
                 enableScripts: true,
-                retainContextWhenHidden: true,
+                retainContextWhenHidden: false,
             }
         );
 
-        this.dontInclude = ["autocalc", "PI", "semicircleAngle", "_time", "view_myscript_current", "mouseX", "mouseY"];
+        this.dontInclude = ["autocalc", "PI", "semicircleAngle", "_time", "view_myscript_current", "mouseX", "mouseY", "book_width", "book_height"];
 
         this.panel.webview.html = this.renderVariableSlidersFromTemplate();
-
-        this.panel.onDidDispose(() => this.panel.dispose(), null, null);
 
         this.treeview.onDidChangeTreeData(() => {
             setTimeout(() => {
                 this.panel.webview.html = this.renderVariableSlidersFromTemplate();
             }, 100);
+        });
+
+        this.panel.onDidChangeViewState((e)=>{
+            if(e.webviewPanel.visible){
+                this.panel.webview.html = this.renderVariableSlidersFromTemplate();
+            }
         });
 
         this.panel.webview.onDidReceiveMessage(
@@ -52,6 +56,8 @@ class JSEdenSlidersWebview{
             null,
             null
         );
+
+        this.panel.onDidDispose(() => this.panel.dispose(), null, null);
 
         JSEdenSlidersWebview.currentPanel = this;
     }
