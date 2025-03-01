@@ -16,17 +16,17 @@
             margin-bottom: 20px;
         }
 
-        .slider-group {
-            margin: 15px 0;
+        .value-adjuster {
+            position: relative;
+            padding: 5px 10px;
+            cursor: pointer;
+            background: var(--vscode-button-background);
+            border-radius: 4px;
+            user-select: none;
         }
 
-        input[type="range"] {
-            width: 200px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
+        .value-adjuster:hover {
+            background: var(--vscode-button-hoverBackground);
         }
     </style>
 </head>
@@ -40,14 +40,11 @@
         const vscode = acquireVsCodeApi();
 
         function updateVariable(name, value) {
-            // Update the display
-            document.getElementById(name + '-value').textContent = value;
-
-            // Send message to extension
+            const numValue = parseFloat(value);
             vscode.postMessage({
                 command: 'updateVariable',
                 variable: name,
-                value: parseInt(value)
+                value: numValue
             });
         }
 
@@ -66,6 +63,93 @@
                     break;
             }
         });
+
+        function throttle(func, limit) {
+            let inThrottle;
+            return function () {
+                const args = arguments;
+                const context = this;
+                if (!inThrottle) {
+                    func.apply(context, args);
+                    inThrottle = true;
+                    setTimeout(() => inThrottle = false, limit);
+                }
+            }
+        }
+
+        document.querySelectorAll('.value-adjuster').forEach(adjuster => {
+            let isDragging = false;
+            let startX = 0;
+            let currentValue = 0;
+            let sensitivity = 0.5;
+            let valueDisplay = adjuster.querySelector('.value');
+
+            function startAdjusting(e) {
+                isDragging = true;
+                startX = e.clientX;
+                currentValue = parseFloat(adjuster.dataset.value || valueDisplay.textContent);
+
+                vscode.postMessage({
+                    command: "movingSlider",
+                    value: true
+                });
+            }
+
+            function onMouseMove(e) {
+                if (!isDragging) return;
+
+                const delta = (e.clientX - startX) * sensitivity;
+                const newValue = currentValue + delta;
+
+                valueDisplay.textContent = newValue;
+
+                updateValue(newValue);
+            }
+
+            function stopAdjusting() {
+                if (!isDragging) return;
+
+                isDragging = false;
+
+                vscode.postMessage({
+                    command: "movingSlider",
+                    value: false
+                });
+            }
+
+            function updateValue(value) {
+                vscode.postMessage({
+                    command: 'updateVariable',
+                    variable: adjuster.id.replace('-adjuster', ''),
+                    value: value,
+                    formatted: value
+                });
+            }
+
+            adjuster.addEventListener('mousedown', startAdjusting);
+            document.addEventListener('mousemove', throttle(onMouseMove, 50));
+            document.addEventListener('mouseup', stopAdjusting);
+
+            document.addEventListener('keydown', (e) => {
+                if (isDragging) {
+                    switch (e.key) {
+                        case 'Shift':
+                            sensitivity = 0.1;
+                            break;
+                        case 'Alt':
+                            sensitivity = 2.0;
+                            break;
+                    }
+                }
+            });
+
+            document.addEventListener('keyup', (e) => {
+                if (e.key === 'Shift' || e.key === 'Alt') {
+                    sensitivity = 0.5;
+                }
+            });
+        });
+        
     </script>
 </body>
 

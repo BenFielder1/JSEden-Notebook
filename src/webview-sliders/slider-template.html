@@ -1,11 +1,6 @@
-<div class="slider-group">
-    <label>{{name}}: <span id="{{name}}-value">{{value}}</span></label>
-    <input 
-        type="range" 
-        min="0" 
-        max="100" 
-        value="{{value}}" 
-        id="{{name}}-slider"
-        onchange="updateVariable('{{name}}', this.value)"
-    >
+<div class="variable-control">
+    <label>{{name}}: </label>
+    <div class="value-adjuster" id="{{name}}-adjuster">
+        <span class="value" id="{{name}}-value">{{value}}</span>
+    </div>
 </div>

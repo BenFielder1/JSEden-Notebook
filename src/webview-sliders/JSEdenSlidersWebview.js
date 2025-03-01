@@ -29,13 +29,17 @@ class JSEdenSlidersWebview{
             }
         );
 
+        this.movingSlider = false;
+
         this.dontInclude = ["autocalc", "PI", "semicircleAngle", "_time", "view_myscript_current", "mouseX", "mouseY", "book_width", "book_height"];
 
         this.panel.webview.html = this.renderVariableSlidersFromTemplate();
 
         this.treeview.onDidChangeTreeData(() => {
             setTimeout(() => {
-                this.panel.webview.html = this.renderVariableSlidersFromTemplate();
+                if(!this.movingSlider){
+                    this.panel.webview.html = this.renderVariableSlidersFromTemplate();
+                }
             }, 100);
         });
 
@@ -48,9 +52,12 @@ class JSEdenSlidersWebview{
         this.panel.webview.onDidReceiveMessage(
             message => {
                 switch (message.command) {
-                    case 'updateVariable':
+                    case "updateVariable":
                         JSEdenNotebookKernel.updateVariableFromSlider(message.variable, message.value);
-                        return;
+                        break;
+                    case "movingSlider":
+                        this.movingSlider = message.value;
+                        break;
                 }
             },
             null,
