@@ -83,7 +83,7 @@ class JSEdenNotebookKernel{
     execute(cells){
         cells.forEach(async (cell)=>{
             let execution = this.controller.createNotebookCellExecution(cell);
-            execution.executionOrder = ++this._executionOrder;
+            execution.executionOrder = ++this.executionOrder;
             execution.start(Date.now());
 
             let code = cell.document.getText();
