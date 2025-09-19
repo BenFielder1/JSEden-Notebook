@@ -1,4 +1,4 @@
-# JSEden Notebook: Interactive Creative Coding with JS-Eden in VS Code
+# JSEden Notebook: Interactive Coding with JS-Eden in VS Code
 
 [![Repository URL](https://img.shields.io/badge/GitHub-Repository-blue?style=flat-square&logo=github)](https://github.com/BenFielder1/JSEden-Notebook)
 
@@ -50,7 +50,7 @@ JSEden Notebook is designed to provide a seamless and immersive experience for d
     *   `JSEden Notebook: Launch Canvas`: Opens a webview to visualize your JS-Eden output.  You can launch multiple canvases!
     *   `JSEden Notebook: Launch Observables`: Opens a webview to view the JS-Eden variable tree.
     *   `JSEden Notebook: Launch Variable Sliders`: Opens a webview with sliders to control numerical variables in your JS-Eden environment.
-    
+
 5.  **Interact with the Canvas:** Move your mouse within the canvas webview to trigger events and see how your JS-Eden code responds. The canvas also listens for resize events to ensure proper rendering.
 
 ## Libraries Used
