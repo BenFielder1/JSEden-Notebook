@@ -20,6 +20,7 @@ JSEden Notebook is designed to provide a seamless and immersive experience for d
 ## Installation
 
 1.  **Install VS Code:** Ensure you have Visual Studio Code installed on your system.
+
 2.  **Clone the Repository:** Clone the JSEden Notebook repository to your local machine:
 
     ```bash
@@ -27,24 +28,29 @@ JSEden Notebook is designed to provide a seamless and immersive experience for d
     cd JSEden-Notebook
     ```
 
-3.  **Install Dependencies:**  Open the cloned folder in VS Code and install the necessary dependencies:
+3.  **Install Dependencies:** Open the cloned folder in VS Code and install the necessary dependencies:
 
     ```bash
     npm install
     ```
+
+4.  **Update JS-Eden:** Comment or remove lines 61, 62, 63 and 89 from `src/js-eden/js/project.js` to ensure JS-Eden correctly uses your project path.
 
 5.  **Run the Extension:** Press `F5` or go to the `Run and Debug` tab to run the extension in the VS Code Extension Development Host.
 
 ## Usage
 
 1.  **Create a New Notebook:** In VS Code, create a new file with the `.notebook` extension.  This will automatically associate the file with the JSEden Notebook extension.
-2.  **Add Code Cells:** Add code cells to your notebook and write JS-Eden code.  Make sure the cell type is set to `jseden`.
-3.  **Execute Cells:** Execute code cells individually or all at once using the "Run" buttons provided by the notebook interface.
-4.  **Launch Visualizations:** Use the following commands from the VS Code command palette (`Ctrl+Shift+P` or `Cmd+Shift+P`):
 
+2.  **Add Code Cells:** Add code cells to your notebook and write JS-Eden code.  Make sure the cell type is set to `jseden`.
+
+3.  **Execute Cells:** Execute code cells individually or all at once using the "Run" buttons provided by the notebook interface.
+
+4.  **Launch Visualizations:** Use the following commands from the VS Code command palette (`Ctrl+Shift+P` or `Cmd+Shift+P`):
     *   `JSEden Notebook: Launch Canvas`: Opens a webview to visualize your JS-Eden output.  You can launch multiple canvases!
     *   `JSEden Notebook: Launch Observables`: Opens a webview to view the JS-Eden variable tree.
     *   `JSEden Notebook: Launch Variable Sliders`: Opens a webview with sliders to control numerical variables in your JS-Eden environment.
+    
 5.  **Interact with the Canvas:** Move your mouse within the canvas webview to trigger events and see how your JS-Eden code responds. The canvas also listens for resize events to ensure proper rendering.
 
 ## Libraries Used
