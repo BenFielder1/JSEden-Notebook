@@ -1,65 +1,64 @@
-# jseden-notebook-with-kernel README
+# JSEden Notebook: Interactive Coding with JS-Eden in VS Code
 
-This is the README for your extension "jseden-notebook-with-kernel". After writing up a brief description, we recommend including the following sections.
+[![Repository URL](https://img.shields.io/badge/GitHub-Repository-blue?style=flat-square&logo=github)](https://github.com/BenFielder1/JSEden-Notebook)
+
+Welcome to JSEden Notebook, a VS Code extension that brings the power of JS-Eden, a fascinating creative coding environment, directly into your coding workflow. This extension allows you to create, edit, and execute JS-Eden code within interactive notebooks, visualize your creations in real-time, and explore the underlying data structures through an intuitive treeview. Unleash your creativity and explore the captivating world of JS-Eden, all within the comfort of your familiar VS Code environment!
+
+## Project Description
+
+JSEden Notebook is designed to provide a seamless and immersive experience for developers working with JS-Eden. It leverages VS Code's notebook interface to enable iterative development and experimentation. The extension consists of a custom notebook serializer, a dedicated JS-Eden kernel for code execution, and webviews for visualizing output and interacting with the environment. Whether you're a seasoned JS-Eden expert or just starting your coding journey, JSEden Notebook offers the tools you need to bring your ideas to life.
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+*   **Interactive Notebooks:** Create and manage JS-Eden notebooks directly within VS Code, taking advantage of the rich editing features and organizational capabilities.
+*   **JS-Eden Kernel:** Execute JS-Eden code cells seamlessly with a dedicated kernel that handles the compilation and execution of your code.
+*   **Real-time Visualization:** Launch multiple canvas webviews to visualize your JS-Eden creations in real-time. See your code come to life with every change you make.
+*   **Variable Exploration with Treeview:** Gain insights into the internal state of your JS-Eden environment through a treeview that displays variables and their values.
+*   **Interactive Variable Sliders:** Dynamically adjust variable values using intuitive sliders, allowing you to fine-tune your creations and explore different parameters in real-time.
+*   **Mouse Interaction:**  Capture mouse movements and clicks within the canvas webview to create interactive experiences.
 
-For example if there is an image subfolder under your extension project workspace:
+## Installation
 
-\!\[feature X\]\(images/feature-x.png\)
+1.  **Install VS Code:** Ensure you have Visual Studio Code installed on your system.
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+2.  **Clone the Repository:** Clone the JSEden Notebook repository to your local machine:
 
-## Requirements
+    ```bash
+    git clone --recurse-submodules https://github.com/BenFielder1/JSEden-Notebook.git
+    cd JSEden-Notebook
+    ```
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+3.  **Install Dependencies:** Open the cloned folder in VS Code and install the necessary dependencies:
 
-## Extension Settings
+    ```bash
+    npm install
+    ```
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+4.  **Update JS-Eden:** Comment or remove lines 61, 62, 63 and 89 from `src/js-eden/js/project.js` to ensure JS-Eden correctly uses your project path.
 
-For example:
+5.  **Run the Extension:** Press `F5` or go to the `Run and Debug` tab to run the extension in the VS Code Extension Development Host.
 
-This extension contributes the following settings:
+## Usage
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+1.  **Create a New Notebook:** In VS Code, create a new file with the `.notebook` extension.  This will automatically associate the file with the JSEden Notebook extension.
 
-## Known Issues
+2.  **Add Code Cells:** Add code cells to your notebook and write JS-Eden code.  Make sure the cell type is set to `jseden`.
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+3.  **Execute Cells:** Execute code cells individually or all at once using the "Run" buttons provided by the notebook interface.
 
-## Release Notes
+4.  **Launch Visualizations:** Use the following commands from the VS Code command palette (`Ctrl+Shift+P` or `Cmd+Shift+P`):
+    *   `JSEden Notebook: Launch Canvas`: Opens a webview to visualize your JS-Eden output.  You can launch multiple canvases!
+    *   `JSEden Notebook: Launch Observables`: Opens a webview to view the JS-Eden variable tree.
+    *   `JSEden Notebook: Launch Variable Sliders`: Opens a webview with sliders to control numerical variables in your JS-Eden environment.
 
-Users appreciate release notes as you update your extension.
+5.  **Interact with the Canvas:** Move your mouse within the canvas webview to trigger events and see how your JS-Eden code responds. The canvas also listens for resize events to ensure proper rendering.
 
-### 1.0.0
+## Libraries Used
 
-Initial release of ...
+*   **VS Code API:**  Used extensively for integrating with the VS Code environment, including notebook support, webviews, and commands.
+*   **fs (Node.js):**  Used for reading and writing files, such as loading initial JS-Eden code and HTML templates.
+*   **path (Node.js):** Used for constructing file paths within the extension.
+*   **util (Node.js):**  Used for text encoding and decoding.
+*   **js-eden:** The core library for running JS-Eden code. The source is included directly in the project.
 
-### 1.0.1
 
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
